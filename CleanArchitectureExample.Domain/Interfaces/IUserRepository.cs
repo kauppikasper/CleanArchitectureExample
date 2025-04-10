@@ -15,7 +15,7 @@ namespace CleanArchitectureExample.Domain.Interfaces
 
         Task AddAsync(User user);
 
-        Task<User?> GetByEmailAsync(string email);
+        Task<User> GetByEmailAsync(string email);
     }
 }
 

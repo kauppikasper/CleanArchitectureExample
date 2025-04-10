@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureExample.Application.Interfaces;
+using CleanArchitectureExample.Application.Mappers;
 using CleanArchitectureExample.Domain.Interfaces;
 using CleanArchitectureExample.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -79,6 +80,35 @@ namespace CleanArchitectureExample.WebAPI.Controllers
             }
 
         }
-
     }
+
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet("{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var user = await _userService.GetUserByEmailAsync(email);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var userDto = UserMapper.ToDto(user);
+            return Ok(userDto);
+        }
+    }
+
+
+
 }
